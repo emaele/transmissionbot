@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/emaele/transmissionbot/utility"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -26,17 +29,18 @@ func mainBot(message *tgbotapi.Message) {
 	if message.Document != nil {
 		fileURL, err := tBot.GetFileDirectURL(message.Document.FileID)
 		if err != nil {
-			// TODO: handle err
+			log.Println(err)
 		}
 
 		path, err := utility.DownloadFile(message.Document.FileName, fileURL)
 		if err != nil {
-			// TODO: handle err
+			log.Println(err)
 		}
 
 		_, err = tc.Add(path)
 		if err != nil {
-			// TODO: handle err
+			log.Println(err)
+			tBot.Send(tgbotapi.NewMessage(message.Chat.ID, fmt.Sprintf("There was an error adding your torrent file: %s", err.Error())))
 		}
 
 		tBot.Send(tgbotapi.NewMessage(message.Chat.ID, "Added!"))
