@@ -47,9 +47,15 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
-    - name: go build
-      run: go build -v .
+    - name: Build linux
+      run: GOOS=linux go build -v .
+    - name: Build Windows
+      run: GOOS=windows go build -v .
     - uses: actions/upload-artifact@v2
       with:
         name: transmissionbot
         path: transmissionbot
+    - uses: actions/upload-artifact@v2
+      with:
+        name: transmissionbot.exe
+        path: transmissionbot.exe
