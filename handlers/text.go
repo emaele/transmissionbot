@@ -8,6 +8,7 @@ import (
 	"github.com/odwrtw/transmission"
 )
 
+// HandleText manages incoming text messages
 func HandleText(text string, chatid int64, bot *tgbotapi.BotAPI, tc *transmission.Client) {
 	_, err := tc.Add(text)
 	if err != nil {

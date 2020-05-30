@@ -5,6 +5,7 @@ import (
 	"github.com/odwrtw/transmission"
 )
 
+// HandleCommand handles incoming bot commands
 func HandleCommand(text string, chatid int64, bot *tgbotapi.BotAPI, tc *transmission.Client) {
 	switch text {
 	case "start":
