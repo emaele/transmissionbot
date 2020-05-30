@@ -20,6 +20,7 @@ func mainBot(message *tgbotapi.Message) {
 
 	if message.IsCommand() {
 		handlers.HandleCommand(message.Command(), message.Chat.ID, tBot, tc)
+		return
 	}
 
 	if message.Text != "" {
