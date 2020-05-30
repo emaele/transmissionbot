@@ -1,6 +1,7 @@
 package utility
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -19,9 +20,10 @@ func DownloadFile(filename, url string) (string, error) {
 
 	// Create temp dir for download
 	tmp := os.TempDir()
+	path := fmt.Sprintf("%s/%s", tmp, filename)
 
 	// Create the file
-	out, err := os.Create(tmp + filename)
+	out, err := os.Create(path)
 	if err != nil {
 		return "", err
 	}
@@ -33,5 +35,5 @@ func DownloadFile(filename, url string) (string, error) {
 		return "", err
 	}
 
-	return tmp + filename, nil
+	return path, nil
 }

@@ -1,16 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
-	"github.com/emaele/transmissionbot/utility"
+	"github.com/emaele/transmissionbot/handlers"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 func main() {
-	loadEnv()
-
 	//configure polling
 	updates := tBot.GetUpdatesChan(tgbotapi.UpdateConfig{Timeout: 60})
 
@@ -22,27 +17,16 @@ func main() {
 
 }
 func mainBot(message *tgbotapi.Message) {
+
+	if message.IsCommand() {
+		handlers.HandleCommand(message.Command(), message.Chat.ID, tBot, tc)
+	}
+
 	if message.Text != "" {
-		// Handle text
+		handlers.HandleText(message.Text, message.Chat.ID, tBot, tc)
 	}
 
 	if message.Document != nil {
-		fileURL, err := tBot.GetFileDirectURL(message.Document.FileID)
-		if err != nil {
-			log.Println(err)
-		}
-
-		path, err := utility.DownloadFile(message.Document.FileName, fileURL)
-		if err != nil {
-			log.Println(err)
-		}
-
-		_, err = tc.Add(path)
-		if err != nil {
-			log.Println(err)
-			tBot.Send(tgbotapi.NewMessage(message.Chat.ID, fmt.Sprintf("There was an error adding your torrent file: %s", err.Error())))
-		}
-
-		tBot.Send(tgbotapi.NewMessage(message.Chat.ID, "Added!"))
+		handlers.HandleDocument(*message.Document, message.Chat.ID, tBot, tc)
 	}
 }

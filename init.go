@@ -8,6 +8,8 @@ import (
 )
 
 func init() {
+	loadEnv()
+
 	var err error
 	tBot, err = tgbotapi.NewBotAPI(telegramToken)
 	if err != nil {
