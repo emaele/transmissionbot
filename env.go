@@ -3,15 +3,18 @@ package main
 import (
 	"log"
 	"os"
+	"strconv"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/odwrtw/transmission"
+	transmission "github.com/hekmon/transmissionrpc"
 )
 
 var (
 	trAddress string
 	trUser    string
 	trPass    string
+	trPort    uint16
+	trHTTPS   bool
 
 	telegramToken string
 
@@ -37,8 +40,34 @@ func loadEnv() {
 		log.Fatal("Can't load TRANSMISSION_PASS var")
 	}
 
+	trPortt, ok := os.LookupEnv("TRANSMISSION_PORT")
+	if !ok {
+		trPort = 9091
+	} else {
+		port, err := strconv.Atoi(trPortt)
+		if err != nil {
+			log.Fatal(err)
+		}
+		trPort = uint16(port)
+	}
+
+	trHTTPSt, ok := os.LookupEnv("TRANSMISSION_HTTPS")
+	if !ok {
+		trHTTPS = false
+	} else {
+		trHTTPS = boolFromString(trHTTPSt)
+	}
+
 	telegramToken, ok = os.LookupEnv("TELEGRAM_TOKEN")
 	if !ok {
 		log.Fatal("Can't load TELEGRAM_TOKEN var")
 	}
+}
+
+func boolFromString(boo string) bool {
+	if boo == "true" {
+		return true
+	}
+
+	return false
 }

@@ -4,7 +4,7 @@ import (
 	"log"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/odwrtw/transmission"
+	"github.com/hekmon/transmissionrpc"
 )
 
 func init() {
@@ -16,14 +16,12 @@ func init() {
 		log.Fatal(err)
 	}
 
-	// Fill transmission config
-	conf := transmission.Config{
-		Address:  trAddress,
-		User:     trUser,
-		Password: trPass,
+	adv := &transmissionrpc.AdvancedConfig{
+		HTTPS: trHTTPS,
+		Port:  trPort,
 	}
 
-	tc, err = transmission.New(conf)
+	tc, err = transmissionrpc.New(trAddress, trUser, trPass, adv)
 	if err != nil {
 		log.Fatal(err)
 	}
