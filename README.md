@@ -12,6 +12,8 @@ To run the bot you have to set up some config env vars as following:
 | `TRANSMISSION_ADDRRES`     | Your transmission installation address                     |
 | `TRANSMISSION_USER`        | Transmission username                                      |
 | `TRANSMISSION_PASS`        | Transmission password                                      |
+| `TRANSMISSION_PORT`        | Transmission port, if not provided will default to 9091    |
+| `TRANSMISSION_HTTPS`       | Transmission https, you can set it to true or false        |
 
 Edit transmissions remote settings
 
